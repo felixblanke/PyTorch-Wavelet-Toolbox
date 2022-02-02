@@ -36,6 +36,8 @@ class WaveletPacket(BaseDict):
         The decompositions will rely on padded fast wavelet transforms.
 
         Args:
+            input_data (torch.Tensor): The input data array of shape [time]
+                or [batch_size, time].
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
             mode (str): The desired padding method. If you select 'boundary',
@@ -52,7 +54,8 @@ class WaveletPacket(BaseDict):
             self.mode = mode
         self.boundary = boundary_orthogonalization
         self._matrix_wavedec_dict: Dict[int, MatrixWavedec] = {}
-        self.transform(data)
+        if data:
+            self.transform(data)
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
@@ -162,7 +165,8 @@ class WaveletPacket2D(BaseDict):
         self.matrix_wavedec2_dict: Dict[Tuple[int, ...], MatrixWavedec2d] = {}
 
         self.max_level: Optional[int] = None
-        self.transform(data)
+        if data:
+            self.transform(data)
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
