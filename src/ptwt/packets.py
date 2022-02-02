@@ -26,6 +26,7 @@ class WaveletPacket(BaseDict):
 
     def __init__(
         self,
+        data: torch.Tensor,
         wavelet: Union[Wavelet, str],
         mode: str = "reflect",
         boundary_orthogonalization: str = "qr",
@@ -51,7 +52,7 @@ class WaveletPacket(BaseDict):
             self.mode = mode
         self.boundary = boundary_orthogonalization
         self._matrix_wavedec_dict: Dict[int, MatrixWavedec] = {}
-        self.data = {}
+        self.transform(data)
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
@@ -127,6 +128,7 @@ class WaveletPacket2D(BaseDict):
 
     def __init__(
         self,
+        data: torch.Tensor,
         wavelet: Union[Wavelet, str],
         mode: str = "reflect",
         boundary_orthogonalization: str = "qr",
@@ -135,6 +137,8 @@ class WaveletPacket2D(BaseDict):
         """Create a 2D-Wavelet packet tree.
 
         Args:
+            input_data (torch.tensor): The input data tensor
+                of shape [batch_size, height, width]
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
             mode (str): A string indicating the desired padding mode.
@@ -158,12 +162,13 @@ class WaveletPacket2D(BaseDict):
         self.matrix_wavedec2_dict: Dict[Tuple[int, ...], MatrixWavedec2d] = {}
 
         self.max_level: Optional[int] = None
-        self.data = {}
+        self.transform(data)
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
     ) -> "WaveletPacket2D":
-        """Calculate the 2d wavelet packet transform for the input data.
+        """Calculate the 2d wavelet packet transform for the input data,
+           reusing the same object.
 
         Args:
             input_data (torch.tensor): The input data tensor
