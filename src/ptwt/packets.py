@@ -177,8 +177,9 @@ class WaveletPacket2D(BaseDict):
     def transform(
         self, data: torch.Tensor, max_level: Optional[int] = None
     ) -> "WaveletPacket2D":
-        """Calculate the 2d wavelet packet transform for the input data,
-           reusing the same object.
+        """Calculate the 2d wavelet packet transform for the input data.
+
+           The transform function allows reusing the same object.
 
         Args:
             data (torch.tensor): The input data tensor
