@@ -139,7 +139,11 @@ def construct_boundary_a2d(
     """
     wavelet = _as_wavelet(wavelet)
     a = _construct_a_2d(wavelet, height, width, device, dtype=dtype)
+<<<<<<< HEAD
     orth_a = orthogonalize(a, wavelet.dec_len**2, method=boundary)  # noqa: BLK100
+=======
+    orth_a = orthogonalize(a, wavelet.dec_len ** 2, method=boundary)
+>>>>>>> 47505e28e80a80a7dce17ceb7040b2fe53beb4db
     return orth_a
 
 
@@ -172,7 +176,7 @@ def construct_boundary_s2d(
     wavelet = _as_wavelet(wavelet)
     s = _construct_s_2d(wavelet, height, width, device, dtype=dtype)
     orth_s = orthogonalize(
-        s.transpose(1, 0), wavelet.rec_len**2, method=boundary
+        s.transpose(1, 0), wavelet.rec_len ** 2, method=boundary
     ).transpose(1, 0)
     return orth_s
 
