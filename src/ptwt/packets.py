@@ -54,7 +54,7 @@ class WaveletPacket(BaseDict):
             self.mode = mode
         self.boundary = boundary_orthogonalization
         self._matrix_wavedec_dict: Dict[int, MatrixWavedec] = {}
-        if data:
+        if data is not None:
             self.transform(data)
 
     def transform(
@@ -165,7 +165,7 @@ class WaveletPacket2D(BaseDict):
         self.matrix_wavedec2_dict: Dict[Tuple[int, ...], MatrixWavedec2d] = {}
 
         self.max_level: Optional[int] = None
-        if data:
+        if data is not None:
             self.transform(data)
 
     def transform(
