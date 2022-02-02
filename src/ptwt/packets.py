@@ -26,7 +26,7 @@ class WaveletPacket(BaseDict):
 
     def __init__(
         self,
-        data: torch.Tensor,
+        input_data: Optional[torch.Tensor],
         wavelet: Union[Wavelet, str],
         mode: str = "reflect",
         boundary_orthogonalization: str = "qr",
@@ -36,8 +36,9 @@ class WaveletPacket(BaseDict):
         The decompositions will rely on padded fast wavelet transforms.
 
         Args:
-            input_data (torch.Tensor): The input data array of shape [time]
-                or [batch_size, time].
+            input_data (torch.Tensor, optional): The input data array of shape [time]
+                or [batch_size, time]. If None, the object is initialized without
+                performing a decomposition.
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
             mode (str): The desired padding method. If you select 'boundary',
@@ -54,8 +55,10 @@ class WaveletPacket(BaseDict):
             self.mode = mode
         self.boundary = boundary_orthogonalization
         self._matrix_wavedec_dict: Dict[int, MatrixWavedec] = {}
-        if data:
-            self.transform(data)
+        if input_data:
+            self.transform(input_data)
+        else:
+            self.data = {}
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
@@ -131,7 +134,7 @@ class WaveletPacket2D(BaseDict):
 
     def __init__(
         self,
-        data: torch.Tensor,
+        input_data: Optional[torch.Tensor],
         wavelet: Union[Wavelet, str],
         mode: str = "reflect",
         boundary_orthogonalization: str = "qr",
@@ -140,8 +143,9 @@ class WaveletPacket2D(BaseDict):
         """Create a 2D-Wavelet packet tree.
 
         Args:
-            input_data (torch.tensor): The input data tensor
-                of shape [batch_size, height, width]
+            input_data (torch.tensor, optional): The input data tensor
+                of shape [batch_size, height, width].  If None, the object
+                is initialized without performing a decomposition.
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
             mode (str): A string indicating the desired padding mode.
@@ -165,8 +169,10 @@ class WaveletPacket2D(BaseDict):
         self.matrix_wavedec2_dict: Dict[Tuple[int, ...], MatrixWavedec2d] = {}
 
         self.max_level: Optional[int] = None
-        if data:
-            self.transform(data)
+        if input_data:
+            self.transform(input_data)
+        else:
+            self.data = {}
 
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
