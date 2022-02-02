@@ -36,7 +36,7 @@ class WaveletPacket(BaseDict):
         The decompositions will rely on padded fast wavelet transforms.
 
         Args:
-            input_data (torch.Tensor): The input data array of shape [time]
+            data (torch.Tensor): The input data array of shape [time]
                 or [batch_size, time].
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
@@ -140,7 +140,7 @@ class WaveletPacket2D(BaseDict):
         """Create a 2D-Wavelet packet tree.
 
         Args:
-            input_data (torch.tensor): The input data tensor
+            data (torch.tensor): The input data tensor
                 of shape [batch_size, height, width]
             wavelet (Wavelet or str): A pywt wavelet compatible object or
                 the name of a pywt wavelet.
@@ -171,8 +171,9 @@ class WaveletPacket2D(BaseDict):
     def transform(
         self, input_data: torch.Tensor, max_level: Optional[int] = None
     ) -> "WaveletPacket2D":
-        """Calculate the 2d wavelet packet transform for the input data,
-           reusing the same object.
+        """Calculate the 2d wavelet packet transform for the input data.
+
+           The transform function allows reusing the same object.
 
         Args:
             input_data (torch.tensor): The input data tensor
